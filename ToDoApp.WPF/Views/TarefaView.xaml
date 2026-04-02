@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="ToDoApp.WPF.Views.TarefaView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="#F3F6FB">
+
+    <Grid Margin="25">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ================= LISTA ================= -->
+        <Border Background="White"
+                CornerRadius="15"
+                Padding="15"
+                Margin="5">
+
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+            </Border.Effect>
+
+            <ListBox ItemsSource="{Binding Tarefas}"
+                     SelectedItem="{Binding TarefaSelecionada, Mode=TwoWay}"
+                     BorderThickness="0"
+                     Background="Transparent">
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <EventSetter Event="PreviewMouseDown"
+                                            Handler="ListBoxItem_PreviewMouseDown" /> <!--QUANDO CLICAR EM UM ITEM DA LISTA, CHAMA ESSE MÉTODO DO C#-->
+                        <Setter Property="Focusable" Value="False" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="12"
+                                Margin="6"
+                                CornerRadius="10"
+                                Background="#F9FAFB">
+
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#F9FAFB"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#E8F0FE"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                                <!-- CHECKBOX -->
+                                <CheckBox IsChecked="{Binding Concluida, Mode=OneWay}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,12,0"
+                                          Cursor="Hand"
+                                          Width="18"
+                                          Height="18"
+                                          Command="{Binding DataContext.ConcluirCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
+                                <!-- TEXTO -->
+                                <TextBlock Text="{Binding Titulo}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center"/>
+
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+
+        <!-- ================= FORM ================= -->
+        <Border Grid.Column="1"
+                Background="White"
+                CornerRadius="15"
+                Padding="25"
+                Margin="10">
+
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.2"/>
+            </Border.Effect>
+
+            <StackPanel>
+
+                <TextBlock Text="Nova Tarefa"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+
+                <!-- TÍTULO -->
+                <TextBlock Text="Título"
+                           FontWeight="SemiBold"
+                           Foreground="#555"/>
+
+                <TextBox Text="{Binding Titulo, UpdateSourceTrigger=PropertyChanged}"
+                         Height="35"
+                         Margin="0,8,0,15"
+                         Padding="8"
+                         Background="#F5F7FA"
+                         BorderBrush="#D0D7E2"
+                         BorderThickness="1"
+                         FontSize="13"/>
+
+                <!-- BOTÕES -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+
+                    <Button Content="Adicionar"
+                            Command="{Binding AdicionarCommand}"
+                            Background="#4CAF50"
+                            Foreground="White"
+                            Padding="12,6"
+                            Margin="5"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            FontWeight="SemiBold"/>
+
+                    <Button Content="Remover"
+                            Command="{Binding RemoverCommand}"
+                            Background="#F44336"
+                            Foreground="White"
+                            Padding="12,6"
+                            Margin="5"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            FontWeight="SemiBold"/>
+
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
